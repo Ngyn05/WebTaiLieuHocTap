@@ -279,9 +279,8 @@
       }
     });
 
-    var ms = String(targetDate.getMilliseconds()).padStart(3, "0");
-    return lookup.year + "-" + lookup.month + "-" + lookup.day + "T" +
-      lookup.hour + ":" + lookup.minute + ":" + lookup.second + "." + ms + "+07:00";
+    return lookup.year + "-" + lookup.month + "-" + lookup.day + " " +
+      lookup.hour + ":" + lookup.minute + ":" + lookup.second + "+07:00";
   }
 
   function mapActivityFromPath(pathname) {
