@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Đơn Hàng - StudyHub</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <link rel="stylesheet" href="style.css">
+        <script defer src="analytics-config.js"></script>
+        <script defer src="analytics.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+
+    <body>
+        <section id="header">
+            <a href="#"><img src="img/logo.png" class="logo" alt=""></a>
+
+            <div>
+                <ul id="navbar">
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="shop.html">Cửa hàng</a></li>
+                    <li><a class="active" href="orders.html">Đơn hàng</a></li>
+                    <li><a href="blog.html">Bài viết</a></li>
+                    <li><a href="about.html">Giới thiệu</a></li>
+                    <li><a href="contact.html">Liên hệ</a></li>
+                    <li id="lg-bag"><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                    <li id="lg-bag"><a href="login.html"><i class="fa fa-user"></i></a></li>
+                    <a href="#" id="close"><i class="fa fa-times"></i></a>
+                </ul>
+            </div>
+
+            <div id="mobile">
+                <a href="cart.html"><i class="fa fa-shopping-bag"></i></a>
+                <a href="login.html"><i class="fa fa-user"></i></a>
+                <i id="bar" class="fas fa-outdent"></i>
+            </div>
+        </section>
+
+        <section id="page-header" class="about-header">
+            <h2>Đơn hàng của bạn</h2>
+            <p>Theo dõi lịch sử và trạng thái đơn hàng</p>
+        </section>
+
+        <section id="product1" class="section-p1">
+            <div id="orders-container"></div>
+        </section>
+
+        <footer class="section-p1">
+            <div class="col">
+                <img class="logo" src="img/logo.png" alt="Logo StudyHub">
+                <h4>Liên Hệ</h4>
+                <p><strong>Địa chỉ:</strong> 279 Nguyễn Tri Phương, Quận 10, TP. Hồ Chí Minh</p>
+                <p><strong>Điện thoại:</strong> +0255 123 456 / (+84) 123 456 789</p>
+                <p><strong>Giờ mở cửa:</strong> 9:00 - 16:00 (Thứ 2 - Thứ 7)</p>
+            </div>
+
+            <div class="col">
+                <h4>Tài Khoản</h4>
+                <a href="login.html">Đăng nhập</a>
+                <a href="cart.html">Xem giỏ hàng</a>
+                <a href="orders.html">Theo dõi đơn hàng</a>
+            </div>
+            <div class="copyright">
+                <p>© 2025 SBOYS. Bảo lưu mọi quyền.</p>
+            </div>
+        </footer>
+
+        <script defer src="supabase-config.js"></script>
+        <script defer src="products-db.js"></script>
+        <script defer src="cart-db.js"></script>
+        <script defer src="orders-db.js"></script>
+        <script defer src="auth.js"></script>
+        <script defer src="script.js"></script>
+        <script>
+            function formatOrderDate(value) {
+                if (!value) return '-';
+                const d = new Date(value);
+                if (Number.isNaN(d.getTime())) return '-';
+                return d.toLocaleString('vi-VN');
+            }
+
+            function formatOrderMoney(value) {
+                const amount = Number(value || 0);
+                return amount.toLocaleString('vi-VN') + ' ₫';
+            }
+
+            function renderOrders(orders) {
+                const container = document.getElementById('orders-container');
+                if (!container) return;
+
+                if (!Array.isArray(orders) || orders.length === 0) {
+                    container.innerHTML = `
+                        <div style="padding:20px;border:1px solid #e2e9e1;border-radius:12px;background:#fff;">
+                            <h3 style="margin-bottom:8px;">Bạn chưa có đơn hàng nào</h3>
+                            <p style="margin-bottom:12px;">Hãy thêm sản phẩm vào giỏ và thanh toán để tạo đơn đầu tiên.</p>
+                            <a href="shop.html" class="normal" style="text-decoration:none;display:inline-block;padding:10px 16px;">Mua ngay</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = orders.map((order) => {
+                    const items = Array.isArray(order.items) ? order.items : [];
+                    const itemList = items.length
+                        ? items.map((item) => `<li>${item.product_name || 'Sản phẩm'} x ${item.quantity || 0}</li>`).join('')
+                        : '<li>Không có chi tiết sản phẩm</li>';
+
+                    return `
+                        <article style="padding:16px;border:1px solid #e2e9e1;border-radius:12px;background:#fff;margin-bottom:14px;">
+                            <h3 style="margin:0 0 6px 0;">${order.order_number || 'N/A'}</h3>
+                            <p style="margin:0 0 6px 0;"><strong>Ngày tạo:</strong> ${formatOrderDate(order.created_at)}</p>
+                            <p style="margin:0 0 6px 0;"><strong>Trạng thái:</strong> ${order.status || 'pending'}</p>
+                            <p style="margin:0 0 8px 0;"><strong>Tổng tiền:</strong> ${formatOrderMoney(order.total_amount)}</p>
+                            <ul style="margin:0;padding-left:18px;">${itemList}</ul>
+                        </article>
+                    `;
+                }).join('');
+            }
+
+            document.addEventListener('DOMContentLoaded', async () => {
+                const user = await getCurrentUser();
+                if (!user) {
+                    alert('Vui lòng đăng nhập để xem đơn hàng.');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const orders = await getOrdersWithItems(user.id);
+                renderOrders(orders);
+            });
+        </script>
+    </body>
+
+</html>
+

@@ -1,0 +1,20 @@
+<svg width="1200" height="700" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Blog learning card 2">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eaf8f5"/>
+      <stop offset="100%" stop-color="#eef4ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#g)"/>
+  <rect x="120" y="90" width="960" height="520" rx="30" fill="#ffffff" stroke="#d8e5f3" stroke-width="4"/>
+  <rect x="180" y="170" width="300" height="320" rx="20" fill="#1b5e93"/>
+  <rect x="230" y="220" width="200" height="26" rx="13" fill="#ffffff" opacity="0.95"/>
+  <rect x="230" y="270" width="160" height="18" rx="9" fill="#d6e7fa"/>
+  <rect x="230" y="304" width="140" height="18" rx="9" fill="#d6e7fa"/>
+  <rect x="530" y="170" width="480" height="24" rx="12" fill="#19466c"/>
+  <rect x="530" y="220" width="400" height="14" rx="7" fill="#8296b0"/>
+  <rect x="530" y="252" width="440" height="14" rx="7" fill="#8296b0"/>
+  <rect x="530" y="284" width="360" height="14" rx="7" fill="#8296b0"/>
+  <path d="M530 520 C640 400, 770 410, 880 340 C930 305, 970 274, 1010 230" stroke="#0f8f7e" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <circle cx="1010" cy="230" r="24" fill="#0f8f7e"/>
+</svg>

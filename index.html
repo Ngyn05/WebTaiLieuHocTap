@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="05Vou9LzUSI7bIMAT6cuYgGGaIAGlRrci-0YjjrUMM4" />
+    <title>StudyHub - Kho Tài Liệu Học Tập Đại Học</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <script defer src="analytics-config.js"></script>
+    <script defer src="analytics.js"></script>
+
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+
+  <body class="home-page">
+    <section id="header">
+      <a href="#"><img src="img/logo.png" class="logo" alt=""></a>
+
+      <div>
+        <ul id="navbar">
+          <li><a class="active" href="index.html">Trang chủ</a></li>
+          <li><a href="shop.html">Cửa hàng</a></li>
+          <li><a href="orders.html">Đơn hàng</a></li>
+          <li><a href="blog.html">Bài viết</a></li>
+          <li><a href="about.html">Giới thiệu</a></li>
+          <li><a href="contact.html">Liên hệ</a></li>
+          <li id="lg-bag"><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+          <li id="lg-bag"><a href="login.html"><i class="fa fa-user"></i></a></li>
+          <a href="#" id="close"><i class="fa fa-times"></i></a>
+        </ul>
+      </div>
+
+      <div id="mobile">
+        <a href="cart.html"><i class="fa fa-shopping-bag"></i></a>
+        <a href="login.html"><i class="fa fa-user"></i></a>
+        <i id="bar" class="fas fa-outdent"></i>
+      </div>
+    </section>
+
+    <section id="hero">
+      <div class="hero-content">
+        <h4>Hỗ Trợ Học Tập</h4>
+        <h1>Chinh phục kỳ thi cùng StudyHub</h1>
+        <p>Tìm kiếm tài liệu, bài giảng, đề thi đầy đủ từ tất cả các môn học - giúp bạn học tập hiệu quả hơn!</p>
+        <button onclick="window.location.href='shop.html'">Khám Phá Ngay</button>
+      </div>
+    </section>
+
+    <section id="category" class="section-p1">
+      <div class="cg-box" onclick="window.location.href='shop.html'">
+        <img src="img/category/icon1.svg" alt="Danh mục Kinh tế - Quản trị">
+        <h6>Kinh tế - Quản trị</h6>
+      </div>
+      <div class="cg-box" onclick="window.location.href='shop.html'">
+        <img src="img/category/icon2.svg" alt="Danh mục CNTT - Kỹ thuật">
+        <h6>CNTT - Kỹ thuật</h6>
+      </div>
+      <div class="cg-box" onclick="window.location.href='shop.html'">
+        <img src="img/category/icon3.svg" alt="Danh mục Luật - Xã hội">
+        <h6>Luật - Xã hội</h6>
+      </div>
+      <div class="cg-box" onclick="window.location.href='shop.html'">
+        <img src="img/category/icon4.svg" alt="Danh mục Ngoại ngữ">
+        <h6>Ngoại ngữ</h6>
+      </div>
+    </section>
+
+    <section id="newsletter" class="section-p1 section-m1">
+      <div class="newstext">
+        <h4>Đăng Ký Nhận Bản Tin</h4>
+        <p>Cập nhật đề cương mới mỗi tuần và <span>ưu đãi dành riêng cho sinh viên.</span></p>
+      </div>
+      <div class="form">
+        <input type="text" placeholder="Nhập địa chỉ email của bạn">
+        <button class="normal">Đăng Ký</button>
+      </div>
+    </section>
+
+    <footer class="section-p1">
+      <div class="col">
+        <img class="logo" src="img/logo.png" alt="Logo StudyHub">
+        <h4>Liên Hệ</h4>
+        <p><strong>Địa chỉ:</strong> 279 Nguyễn Tri Phương, Quận 10, TP. Hồ Chí Minh</p>
+        <p><strong>Điện thoại:</strong> +0255 123 456 / (+84) 123 456 789</p>
+        <p><strong>Giờ mở cửa:</strong> 9:00 - 16:00 (Thứ 2 - Thứ 7)</p>
+        <div class="follow">
+          <h4>Theo dõi chúng tôi</h4>
+          <div class="icon">
+            <i class="fab fa-facebook-f"></i>
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-pinterest-p"></i>
+            <i class="fab fa-youtube"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <h4>Về StudyHub</h4>
+        <a href="about.html">Giới thiệu</a>
+        <a href="blog.html">Bài viết học tập</a>
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản sử dụng</a>
+        <a href="contact.html">Liên hệ</a>
+      </div>
+
+      <div class="col">
+        <h4>Tài Khoản</h4>
+        <a href="login.html">Đăng nhập</a>
+        <a href="cart.html">Xem giỏ hàng</a>
+        <a href="orders.html">Theo dõi đơn hàng</a>
+        <a href="contact.html">Trung tâm hỗ trợ</a>
+      </div>
+
+      <div class="col install">
+        <h4>Tải Ứng Dụng</h4>
+        <p>Tải ứng dụng trên App Store hoặc Google Play</p>
+        <div class="row">
+          <img src="img/pay/app.jpg" alt="App Store">
+          <img src="img/pay/play.jpg" alt="Google Play">
+        </div>
+        <p>Phương thức thanh toán an toàn</p>
+        <div class="icon-container">
+          <i class="fa-brands fa-cc-visa" style="color: navy;"></i>
+          <i class="fa-brands fa-cc-amex" style="color: blue;"></i>
+          <i class="fa-brands fa-cc-mastercard" style="color: #DB0000;"></i>
+          <i class="fa-brands fa-cc-discover" style="color: #FFBB00;"></i>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>© 2026 StudyHub. Bảo lưu mọi quyền.</p>
+      </div>
+    </footer>
+
+    <!-- Supabase Configuration -->
+    <script defer src="supabase-config.js"></script>
+    <!-- Database Modules -->
+    <script defer src="products-db.js"></script>
+    <script defer src="cart-db.js"></script>
+    <script defer src="auth.js"></script>
+    <!-- Main Script -->
+    <script defer src="script.js"></script>
+  </body>
+</html>
+
+

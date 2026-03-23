@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Thanh Toán - StudyHub</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <link rel="stylesheet" href="style.css">
+        <script defer src="analytics-config.js"></script>
+        <script defer src="analytics.js"></script>
+        
+        <!-- Supabase Client Library -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+
+    <body>
+        <section id="header">
+            <a href="#"><img src="img/logo.png" class="logo" alt=""></a>
+
+            <div>
+                <ul id="navbar">
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="shop.html">Cửa hàng</a></li>
+                    <li><a href="orders.html">Đơn hàng</a></li>
+                    <li><a href="blog.html">Bài viết</a></li>
+                    <li><a href="about.html">Giới thiệu</a></li>
+                    <li><a href="contact.html">Liên hệ</a></li>
+                    <li id="lg-bag"><a class="active" href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                    <li id="lg-bag"><a href="login.html"><i class="fa fa-user"></i></a></li>
+                    <a href="#" id="close"><i class="fa fa-times"></i></a>
+                </ul>
+            </div>
+
+            <div id="mobile">
+                <a href="cart.html"><i class="fa fa-shopping-bag"></i></a>
+                <a href="login.html"><i class="fa fa-user"></i></a>
+                <i id="bar" class="fas fa-outdent"></i>
+            </div>
+        </section>
+
+        <section>
+            <div class="form-wrapper">
+                <form action="#" method="POST">
+                    <div class="section-billing" style="flex: 1 1 100%; min-width: 100%;">
+                        <h3>Thông tin thanh toán</h3>
+
+                        <label for="fname">Họ và tên</label>
+                        <input type="text" id="fname" name="firstname" required>
+
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+
+                        <label for="phone">Số điện thoại</label>
+                        <input type="text" id="phone" name="phone">
+
+                        <label for="adr">Địa chỉ nhận hàng</label>
+                        <input type="text" id="adr" name="address" required>
+                    </div>
+
+                    <button type="submit" class="btn">Thanh toán</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="section-p1">
+            <div class="col">
+                <img class="logo" src="img/logo.png" alt="Logo StudyHub">
+                <h4>Liên Hệ</h4>
+                <p><strong>Địa chỉ:</strong> 279 Nguyễn Tri Phương, Quận 10, TP. Hồ Chí Minh</p>
+                <p><strong>Điện thoại:</strong> +0255 123 456 / (+84) 123 456 789</p>
+                <p><strong>Giờ mở cửa:</strong> 9:00 - 16:00 (Thứ 2 - Thứ 7)</p>
+                <div class="follow">
+                    <h4>Theo dõi chúng tôi</h4>
+                    <div class="icon">
+                        <i class="fab fa-facebook-f"></i>
+                        <i class="fab fa-twitter"></i>
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-pinterest-p"></i>
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <h4>Về Chúng Tôi</h4>
+                <a href="#">Giới thiệu</a>
+                <a href="#">Thông tin giao hàng</a>
+                <a href="#">Chính sách bảo mật</a>
+                <a href="#">Điều khoản & Điều kiện</a>
+                <a href="#">Liên hệ</a>
+            </div>
+
+            <div class="col">
+                <h4>Tài Khoản</h4>
+                <a href="login.html">Đăng nhập</a>
+                <a href="cart.html">Xem giỏ hàng</a>
+                <a href="#">Danh sách yêu thích</a>
+                <a href="orders.html">Theo dõi đơn hàng</a>
+                <a href="#">Hỗ trợ khách hàng</a>
+            </div>
+
+            <div class="col install">
+                <h4>Tải Ứng Dụng</h4>
+                <p>Tải ứng dụng trên App Store hoặc Google Play</p>
+                <div class="row">
+                    <img src="img/pay/app.jpg" alt="App Store">
+                    <img src="img/pay/play.jpg" alt="Google Play">
+                </div>
+                <p>Phương thức thanh toán an toàn</p>
+                <div class="icon-container">
+                    <i class="fa-brands fa-cc-visa" style="color: navy;"></i>
+                    <i class="fa-brands fa-cc-amex" style="color: blue;"></i>
+                    <i class="fa-brands fa-cc-mastercard" style="color: #DB0000;"></i>
+                    <i class="fa-brands fa-cc-discover" style="color: #FFBB00;"></i>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 SBOYS. Bảo lưu mọi quyền.</p>
+            </div>
+        </footer>
+
+        <!-- Supabase Configuration -->
+        <script src="supabase-config.js"></script>
+        <script src="products-db.js"></script>
+        <script src="cart-db.js"></script>
+        <script src="orders-db.js"></script>
+        <script src="auth.js"></script>
+        <!-- Payment Script -->
+        <script src="script.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', async () => {
+                let checkoutItems = [];
+
+                // Kiểm tra user đã đăng nhập hay chưa
+                const currentUser = await getCurrentUser();
+                
+                if (currentUser) {
+                    document.querySelector('input[name="email"]').value = currentUser.email;
+
+                    checkoutItems = await getCartFromDatabase(currentUser.id);
+                    if (window.analyticsTracker) {
+                        window.analyticsTracker.trackBeginCheckout(checkoutItems);
+                    }
+                }
+
+                // Xử lý thanh toán
+                document.querySelector('form').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const activeUser = await getCurrentUser();
+                    if (!activeUser) {
+                        alert('Vui lòng đăng nhập để tiếp tục!');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    const paymentData = {
+                        fullName: document.querySelector('input[name="firstname"]').value,
+                        email: document.querySelector('input[name="email"]').value,
+                        phone: document.querySelector('input[name="phone"]').value,
+                        address: document.querySelector('input[name="address"]').value,
+                        city: 'TP. Ho Chi Minh',
+                        country: 'Viet Nam',
+                        paymentMethod: 'cod'
+                    };
+
+                    // Kiểm tra dữ liệu
+                    if (!paymentData.fullName || !paymentData.email || !paymentData.address) {
+                        alert('Vui lòng nhập đầy đủ thông tin bắt buộc!');
+                        return;
+                    }
+
+                    if (window.analyticsTracker) {
+                        window.analyticsTracker.trackAddPaymentInfo(checkoutItems, paymentData.paymentMethod || 'cod');
+                    }
+
+                    const submitButton = document.querySelector('button[type="submit"]');
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Đang xử lý...';
+
+                    const orderResult = await createOrderFromCart(activeUser.id, paymentData);
+                    if (!orderResult.success) {
+                        alert(orderResult.message || 'Không thể tạo đơn hàng. Vui lòng thử lại.');
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Thanh toán';
+                        return;
+                    }
+
+                    const orderCode = orderResult?.order?.order_number ? `\nMã đơn: ${orderResult.order.order_number}` : '';
+                    alert(`Thanh toán thành công!${orderCode}\n\nXin cảm ơn đã hỗ trợ nhóm mình trong đồ án này.`);
+                    window.location.href = 'orders.html';
+                });
+            });
+        </script>
+    </body>
+
+</html>
+
+

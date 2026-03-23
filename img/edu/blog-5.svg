@@ -1,0 +1,17 @@
+<svg width="1200" height="700" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Blog learning card 5">
+  <rect width="1200" height="700" fill="#f0f8ff"/>
+  <rect x="100" y="90" width="1000" height="520" rx="28" fill="#ffffff" stroke="#d4e4f3" stroke-width="4"/>
+  <rect x="170" y="150" width="860" height="70" rx="16" fill="#19466c"/>
+  <rect x="210" y="178" width="260" height="14" rx="7" fill="#c8ddf6"/>
+  <rect x="170" y="250" width="420" height="320" rx="20" fill="#e7f3ff"/>
+  <rect x="620" y="250" width="410" height="320" rx="20" fill="#e9faf6"/>
+  <rect x="210" y="290" width="320" height="18" rx="9" fill="#8ea6c0"/>
+  <rect x="210" y="326" width="290" height="18" rx="9" fill="#8ea6c0"/>
+  <rect x="210" y="362" width="300" height="18" rx="9" fill="#8ea6c0"/>
+  <circle cx="730" cy="330" r="38" fill="#0f8f7e"/>
+  <circle cx="730" cy="410" r="38" fill="#1b5e93"/>
+  <circle cx="730" cy="490" r="38" fill="#f59b23"/>
+  <rect x="790" y="314" width="200" height="28" rx="14" fill="#7fa5cd"/>
+  <rect x="790" y="394" width="180" height="28" rx="14" fill="#7fa5cd"/>
+  <rect x="790" y="474" width="210" height="28" rx="14" fill="#7fa5cd"/>
+</svg>

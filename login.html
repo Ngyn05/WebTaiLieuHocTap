@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Đăng Nhập - StudyHub</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <link rel="stylesheet" href="style.css">
+        <script defer src="analytics-config.js"></script>
+        <script defer src="analytics.js"></script>
+        
+        <!-- Supabase Client Library -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+
+    <body>
+        <section id="header">
+            <a href="#"><img src="img/logo.png" class="logo" alt=""></a>
+
+            <div>
+                <ul id="navbar">
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="shop.html">Cửa hàng</a></li>
+                    <li><a href="orders.html">Đơn hàng</a></li>
+                    <li><a href="blog.html">Bài viết</a></li>
+                    <li><a href="about.html">Giới thiệu</a></li>
+                    <li><a href="contact.html">Liên hệ</a></li>
+                    <li id="lg-bag"><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                    <li id="lg-bag"><a class="active" href="login.html"><i class="fa fa-user"></i></a></li>
+                    <a href="#" id="close"><i class="fa fa-times"></i></a>
+                </ul>
+            </div>
+
+            <div id="mobile">
+                <a href="cart.html"><i class="fa fa-shopping-bag"></i></a>
+                <a href="login.html"><i class="fa fa-user"></i></a>
+                <i id="bar" class="fas fa-outdent"></i>
+            </div>
+        </section>
+
+        <section id="login">
+    <div class="login-container">
+        <div class="login-form">
+            <h2>Đăng nhập</h2>
+            <form id="login-form">
+                <div class="input-box">
+                    <span class="icon"><i class="fas fa-user"></i></span>
+                    <input type="email" name="email" required>
+                    <label>Email</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon"><i class="fas fa-lock"></i></span>
+                    <input type="password" name="password" required>
+                    <label>Mật khẩu</label>
+                </div>
+                
+                <div class="options">
+                    <label><input type="checkbox" /> Ghi nhớ đăng nhập</label>
+                    <a href="#" id="forgot-password-link">Quên mật khẩu?</a>
+                </div>
+
+                <button type="submit" class="login-btn" id="login-btn">Đăng nhập</button>
+
+                <div class="register">
+                    <p>Bạn chưa có tài khoản? <a href="register.html">Đăng ký</a></p>
+                </div>
+                
+                <div class="divider">hoặc</div>
+                <div class="icon-container">
+                    <a href="#" class="btn-icon" title="Đăng nhập với Google">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="#" class="btn-icon" title="Đăng nhập với Apple">
+                        <i class="fab fa-apple"></i>
+                    </a>
+                    <a href="#" class="btn-icon" title="Đăng nhập với Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+        </section>
+
+        <!-- Supabase Configuration -->
+        <script src="supabase-config.js"></script>
+        <script src="auth.js"></script>
+        <script src="script.js"></script>
+
+        <!-- Login Script -->
+        <script>
+            function showUserInfo(user) {
+                document.getElementById('login').innerHTML = `
+                    <div class="login-container">
+                        <div class="login-form">
+                            <h2>Hồ Sơ Cá Nhân</h2>
+                            <div class="user-info">
+                                <p><strong>Email:</strong> ${user.email}</p>
+                                <p><strong>User ID:</strong> ${user.id}</p>
+                                <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+                                    <a href="admin.html" id="admin-link" class="login-btn" style="display:none;text-decoration:none;text-align:center;line-height:44px;">Mở trang quản trị</a>
+                                    <button id="logout-btn" class="login-btn" style="background-color: #ff6348;">Đăng xuất</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                getCurrentProfile().then((profile) => {
+                    if (profile?.role === 'admin') {
+                        const adminLink = document.getElementById('admin-link');
+                        if (adminLink) {
+                            adminLink.style.display = 'inline-block';
+                        }
+                    }
+                });
+
+                document.getElementById('logout-btn')?.addEventListener('click', async () => {
+                    const result = await logoutUser();
+                    alert(result.message);
+                    window.location.href = 'login.html';
+                });
+            }
+
+            // Kiểm tra xem user đã đăng nhập hay chưa
+            document.addEventListener('DOMContentLoaded', async () => {
+                if (window.location.protocol === 'file:') {
+                    console.warn('Bạn đang mở file trực tiếp (file://). Hãy dùng Live Server hoặc localhost để tránh lỗi Failed to fetch.');
+                }
+
+                const user = await getCurrentUser();
+                if (user) {
+                    const profile = await getCurrentProfile();
+                    if (profile?.role === 'admin') {
+                        window.location.href = 'admin.html';
+                        return;
+                    }
+
+                    console.log('User already logged in:', user.email);
+                    showUserInfo(user);
+                }
+            });
+
+            document.getElementById('login-form')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const form = document.querySelector('#login-form');
+                const email = form.querySelector('input[name="email"]').value;
+                const password = form.querySelector('input[name="password"]').value;
+
+                if (!email || !password) {
+                    alert('Vui lòng nhập đầy đủ thông tin!');
+                    return;
+                }
+
+                const result = await loginUser(email, password);
+                
+                if (result.success) {
+                    if (result.profile?.role === 'admin') {
+                        window.location.href = 'admin.html';
+                        return;
+                    }
+                    showUserInfo(result.user);
+                } else {
+                    alert('Lỗi: ' + result.message);
+                }
+            });
+
+            // Quên mật khẩu
+            document.getElementById('forgot-password-link')?.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const email = prompt('Nhập email của bạn:');
+                if (email) {
+                    const result = await resetPassword(email);
+                    alert(result.message);
+                }
+            });
+        </script>
+    </body>
+
+</html>
+
+

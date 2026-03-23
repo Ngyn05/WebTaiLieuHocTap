@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="#E8F4F8" stroke="#3498DB" stroke-width="2"/>
+  
+  <!-- Center person -->
+  <circle cx="50" cy="35" r="5" fill="#3498DB"/>
+  <path d="M 45 42 Q 50 40 55 42 L 55 50 Q 50 55 50 55 Q 50 55 45 50 Z" fill="#3498DB"/>
+  
+  <!-- Left person -->
+  <circle cx="30" cy="48" r="4" fill="#3498DB" opacity="0.8"/>
+  <path d="M 26 54 Q 30 53 34 54 L 34 60 Q 30 63 30 63 Q 30 63 26 60 Z" fill="#3498DB" opacity="0.8"/>
+  
+  <!-- Right person -->
+  <circle cx="70" cy="48" r="4" fill="#3498DB" opacity="0.8"/>
+  <path d="M 66 54 Q 70 53 74 54 L 74 60 Q 70 63 70 63 Q 70 63 66 60 Z" fill="#3498DB" opacity="0.8"/>
+  
+  <!-- Bottom left person -->
+  <circle cx="35" cy="68" r="4" fill="#3498DB" opacity="0.8"/>
+  <path d="M 31 74 Q 35 73 39 74 L 39 80 Q 35 82 35 82 Q 35 82 31 80 Z" fill="#3498DB" opacity="0.8"/>
+  
+  <!-- Bottom right person -->
+  <circle cx="65" cy="68" r="4" fill="#3498DB" opacity="0.8"/>
+  <path d="M 61 74 Q 65 73 69 74 L 69 80 Q 65 82 65 82 Q 65 82 61 80 Z" fill="#3498DB" opacity="0.8"/>
+  
+  <!-- Connection lines -->
+  <line x1="50" y1="40" x2="30" y2="48" stroke="#3498DB" stroke-width="1" opacity="0.5"/>
+  <line x1="50" y1="40" x2="70" y2="48" stroke="#3498DB" stroke-width="1" opacity="0.5"/>
+  <line x1="50" y1="55" x2="35" y2="68" stroke="#3498DB" stroke-width="1" opacity="0.5"/>
+  <line x1="50" y1="55" x2="65" y2="68" stroke="#3498DB" stroke-width="1" opacity="0.5"/>
+  <line x1="30" y1="52" x2="35" y2="68" stroke="#3498DB" stroke-width="1" opacity="0.5"/>
+  <line x1="70" y1="52" x2="65" y2="68" stroke="#3498DB" stroke-width="1" opacity="0.5"/>
+</svg>

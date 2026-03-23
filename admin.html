@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Trị - StudyHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css">
+  <script defer src="analytics-config.js"></script>
+  <script defer src="analytics.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <section id="header">
+    <a href="index.html"><img src="img/logo.png" class="logo" alt="Logo StudyHub"></a>
+
+    <div>
+      <ul id="navbar">
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="shop.html">Cửa hàng</a></li>
+        <li><a href="orders.html">Đơn hàng</a></li>
+        <li><a href="blog.html">Bài viết</a></li>
+        <li><a href="about.html">Giới thiệu</a></li>
+        <li><a href="contact.html">Liên hệ</a></li>
+        <li id="lg-bag"><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+        <li id="lg-bag"><a class="active" href="admin.html"><i class="fa fa-user-shield"></i></a></li>
+        <a href="#" id="close"><i class="fa fa-times"></i></a>
+      </ul>
+    </div>
+
+    <div id="mobile">
+      <a href="cart.html"><i class="fa fa-shopping-bag"></i></a>
+      <a href="admin.html"><i class="fa fa-user-shield"></i></a>
+      <i id="bar" class="fas fa-outdent"></i>
+    </div>
+  </section>
+
+  <section id="admin-dashboard" class="section-p1">
+    <div class="admin-hero">
+      <div>
+        <p class="admin-eyebrow">Admin Dashboard</p>
+        <h1>Quản trị StudyHub</h1>
+        <p class="admin-subtitle">Quản lý người dùng, sản phẩm và đơn hàng trên một màn hình.</p>
+      </div>
+      <div class="admin-actions">
+        <button id="refresh-data" class="admin-btn">Làm mới dữ liệu</button>
+        <button id="logout-admin" class="admin-btn admin-btn-danger">Đăng xuất</button>
+      </div>
+    </div>
+
+    <div class="admin-stats">
+      <div class="admin-stat-card">
+        <h3>Tổng người dùng</h3>
+        <p id="stat-users">-</p>
+      </div>
+      <div class="admin-stat-card">
+        <h3>Tổng sản phẩm</h3>
+        <p id="stat-products">-</p>
+      </div>
+      <div class="admin-stat-card">
+        <h3>Tổng đơn hàng</h3>
+        <p id="stat-orders">-</p>
+      </div>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="admin-tab-btn active" data-tab="users">Người dùng</button>
+      <button class="admin-tab-btn" data-tab="products">Sản phẩm</button>
+      <button class="admin-tab-btn" data-tab="orders">Đơn hàng</button>
+      <button class="admin-tab-btn" data-tab="behavior">Hành vi người dùng</button>
+    </div>
+
+    <div class="admin-layout">
+      <section id="panel-users" class="admin-panel">
+        <div class="admin-panel-head">
+          <h2>Danh sách người dùng</h2>
+          <input id="search-users" type="text" placeholder="Tìm theo email hoặc username...">
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Vai trò</th>
+                <th>Ngày tạo</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="panel-products" class="admin-panel admin-panel-hidden">
+        <div class="admin-panel-head">
+          <h2>Sản phẩm</h2>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Tên</th>
+                <th>Danh mục</th>
+                <th>Giá</th>
+                <th>ID</th>
+              </tr>
+            </thead>
+            <tbody id="products-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="panel-orders" class="admin-panel admin-panel-hidden">
+        <div class="admin-panel-head">
+          <h2>Đơn hàng</h2>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Mã đơn</th>
+                <th>Khách hàng</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="panel-behavior" class="admin-panel admin-panel-hidden">
+        <div class="admin-panel-head admin-panel-head-column">
+          <h2>Truy xuất hành vi người dùng</h2>
+          <div class="admin-behavior-filters">
+            <input id="behavior-caseid" type="text" placeholder="Nhập CaseID...">
+            <input id="behavior-activity" type="text" placeholder="Hoạt động (ví dụ: Xem cửa hàng)">
+            <input id="behavior-from" type="datetime-local" aria-label="Từ thời gian">
+            <input id="behavior-to" type="datetime-local" aria-label="Đến thời gian">
+            <button id="behavior-search" class="admin-mini-btn" type="button">Lọc dữ liệu</button>
+            <button id="behavior-reset" class="admin-mini-btn" type="button">Đặt lại</button>
+            <button id="behavior-download-excel" class="admin-mini-btn" type="button">Download Excel</button>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>CaseID</th>
+                <th>Hoạt động</th>
+                <th>Thời gian</th>
+                <th>Kênh</th>
+                <th>Thiết bị</th>
+                <th>Loại khách</th>
+                <th>Vị trí</th>
+              </tr>
+            </thead>
+            <tbody id="behavior-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <p id="admin-note" class="admin-note">Đang tải dữ liệu...</p>
+  </section>
+
+  <script defer src="supabase-config.js"></script>
+  <script defer src="products-db.js"></script>
+  <script defer src="orders-db.js"></script>
+  <script defer src="auth.js"></script>
+  <script defer src="script.js"></script>
+
+  <script>
+    function formatDate(input) {
+      if (!input) return '-';
+      const d = new Date(input);
+      if (Number.isNaN(d.getTime())) return '-';
+      return d.toLocaleString('vi-VN');
+    }
+
+    function formatVnd(value) {
+      const amount = Number(value || 0);
+      return amount.toLocaleString('vi-VN') + ' ₫';
+    }
+
+    function setAdminNote(message, isError = false) {
+      const note = document.getElementById('admin-note');
+      if (!note) return;
+      note.textContent = message;
+      note.style.color = isError ? '#b42330' : '#5b7086';
+    }
+
+    function showTab(tabName) {
+      const buttons = document.querySelectorAll('.admin-tab-btn');
+      const panels = {
+        users: document.getElementById('panel-users'),
+        products: document.getElementById('panel-products'),
+        orders: document.getElementById('panel-orders'),
+        behavior: document.getElementById('panel-behavior')
+      };
+
+      buttons.forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.tab === tabName);
+      });
+
+      Object.entries(panels).forEach(([key, panel]) => {
+        if (!panel) return;
+        panel.classList.toggle('admin-panel-hidden', key !== tabName);
+      });
+    }
+
+    async function loadStats() {
+      const usersEl = document.getElementById('stat-users');
+      const productsEl = document.getElementById('stat-products');
+      const ordersEl = document.getElementById('stat-orders');
+
+      try {
+        const [{ count: usersCount }, { count: productsCount }, { count: ordersCount }] = await Promise.all([
+          supabaseClient.from('profiles').select('*', { count: 'exact', head: true }),
+          supabaseClient.from('products').select('*', { count: 'exact', head: true }),
+          supabaseClient.from('orders').select('*', { count: 'exact', head: true })
+        ]);
+
+        usersEl.textContent = String(usersCount ?? 0);
+        productsEl.textContent = String(productsCount ?? 0);
+        ordersEl.textContent = String(ordersCount ?? 0);
+      } catch (error) {
+        console.error('Load stats error:', error);
+        usersEl.textContent = '-';
+        productsEl.textContent = '-';
+        ordersEl.textContent = '-';
+      }
+    }
+
+    function toIsoDate(value) {
+      if (!value) return null;
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return null;
+      return d.toISOString();
+    }
+
+    function getBehaviorFilters() {
+      return {
+        caseId: (document.getElementById('behavior-caseid')?.value || '').trim(),
+        activity: (document.getElementById('behavior-activity')?.value || '').trim(),
+        from: document.getElementById('behavior-from')?.value || '',
+        to: document.getElementById('behavior-to')?.value || ''
+      };
+    }
+
+    async function loadUsers() {
+      const tbody = document.getElementById('users-tbody');
+      if (!tbody) return [];
+
+      try {
+        const { data, error } = await supabaseClient
+          .from('profiles')
+          .select('email, username, role, created_at')
+          .order('created_at', { ascending: false })
+          .limit(100);
+
+        if (error) throw error;
+
+        const users = data || [];
+        tbody.innerHTML = users.map((user) => {
+          const roleClass = user.role === 'admin' ? 'admin-role-admin' : 'admin-role-user';
+          const roleLabel = user.role === 'admin' ? 'Admin' : 'User';
+          return `
+            <tr>
+              <td>${user.email || '-'}</td>
+              <td>${user.username || '-'}</td>
+              <td><span class="admin-role ${roleClass}">${roleLabel}</span></td>
+              <td>${formatDate(user.created_at)}</td>
+            </tr>
+          `;
+        }).join('');
+
+        return users;
+      } catch (error) {
+        console.error('Load users error:', error);
+        tbody.innerHTML = '<tr><td colspan="4">Không tải được danh sách người dùng.</td></tr>';
+        return [];
+      }
+    }
+
+    async function loadProductsTable() {
+      const tbody = document.getElementById('products-tbody');
+      if (!tbody) return;
+
+      try {
+        let rows = Array.isArray(window.productsData) ? window.productsData : [];
+        if (!rows.length && typeof loadProducts === 'function') {
+          await loadProducts();
+          rows = Array.isArray(window.productsData) ? window.productsData : [];
+        }
+
+        if (!rows.length) {
+          const { data, error } = await supabaseClient
+            .from('products')
+            .select('id, name, category, price')
+            .order('name', { ascending: true })
+            .limit(120);
+
+          if (error) throw error;
+          rows = data || [];
+        }
+
+        tbody.innerHTML = rows.map((item) => `
+          <tr>
+            <td>${item.name || '-'}</td>
+            <td>${item.category || '-'}</td>
+            <td>${formatVnd(item.price || 0)}</td>
+            <td>${item.id || '-'}</td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        console.error('Load products table error:', error);
+        tbody.innerHTML = '<tr><td colspan="4">Không tải được danh sách sản phẩm.</td></tr>';
+      }
+    }
+
+    async function loadOrdersTable() {
+      const tbody = document.getElementById('orders-tbody');
+      if (!tbody) return;
+
+      try {
+        const { data, error } = await supabaseClient
+          .from('orders')
+          .select('order_number, full_name, total_amount, status, created_at')
+          .order('created_at', { ascending: false })
+          .limit(100);
+
+        if (error) throw error;
+
+        const rows = data || [];
+        tbody.innerHTML = rows.map((item) => `
+          <tr>
+            <td>${item.order_number || '-'}</td>
+            <td>${item.full_name || '-'}</td>
+            <td>${formatVnd(item.total_amount || 0)}</td>
+            <td>${item.status || '-'}</td>
+            <td>${formatDate(item.created_at)}</td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        console.error('Load orders table error:', error);
+        tbody.innerHTML = '<tr><td colspan="5">Không tải được danh sách đơn hàng.</td></tr>';
+      }
+    }
+
+    async function loadBehaviorTable(filters = {}) {
+      const tbody = document.getElementById('behavior-tbody');
+      if (!tbody) return [];
+
+      try {
+        let query = supabaseClient
+          .from('behavior_tracking')
+          .select('session_id, activity, timestamp, channel, device, customer_type, location')
+          .order('timestamp', { ascending: false })
+          .limit(500);
+
+        if (filters.caseId) {
+          query = query.ilike('session_id', `%${filters.caseId}%`);
+        }
+
+        if (filters.activity) {
+          query = query.ilike('activity', `%${filters.activity}%`);
+        }
+
+        const fromIso = toIsoDate(filters.from);
+        const toIso = toIsoDate(filters.to);
+
+        if (fromIso) {
+          query = query.gte('timestamp', fromIso);
+        }
+
+        if (toIso) {
+          query = query.lte('timestamp', toIso);
+        }
+
+        const { data, error } = await query;
+        if (error) throw error;
+
+        const rows = data || [];
+        window.__adminBehaviorRows = rows;
+
+        tbody.innerHTML = rows.map((item) => `
+          <tr>
+            <td>${item.session_id || '-'}</td>
+            <td>${item.activity || '-'}</td>
+            <td>${formatDate(item.timestamp)}</td>
+            <td>${item.channel || '-'}</td>
+            <td>${item.device || '-'}</td>
+            <td>${item.customer_type || '-'}</td>
+            <td>${item.location || '-'}</td>
+          </tr>
+        `).join('');
+
+        if (!rows.length) {
+          tbody.innerHTML = '<tr><td colspan="7">Không có dữ liệu hành vi phù hợp bộ lọc.</td></tr>';
+        }
+
+        return rows;
+      } catch (error) {
+        console.error('Load behavior table error:', error);
+        tbody.innerHTML = '<tr><td colspan="7">Không tải được dữ liệu hành vi người dùng.</td></tr>';
+        return [];
+      }
+    }
+
+    function downloadBehaviorExcel() {
+      const rows = Array.isArray(window.__adminBehaviorRows) ? window.__adminBehaviorRows : [];
+
+      if (!rows.length) {
+        alert('Không có dữ liệu để tải xuống. Vui lòng lọc hoặc tải dữ liệu trước.');
+        return;
+      }
+
+      if (typeof XLSX === 'undefined') {
+        alert('Thư viện xuất Excel chưa sẵn sàng. Vui lòng thử lại sau vài giây.');
+        return;
+      }
+
+      const exportRows = rows.map((item) => ({
+        CaseID: item.session_id || '',
+        HoatDong: item.activity || '',
+        ThoiGian: formatDate(item.timestamp),
+        Kenh: item.channel || '',
+        ThietBi: item.device || '',
+        LoaiKhach: item.customer_type || '',
+        ViTri: item.location || ''
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(exportRows);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'BehaviorTracking');
+
+      const date = new Date();
+      const stamp = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}_${String(date.getHours()).padStart(2, '0')}${String(date.getMinutes()).padStart(2, '0')}`;
+      XLSX.writeFile(workbook, `behavior_tracking_${stamp}.xlsx`);
+    }
+
+    function initBehaviorActions() {
+      const searchBtn = document.getElementById('behavior-search');
+      const resetBtn = document.getElementById('behavior-reset');
+      const downloadBtn = document.getElementById('behavior-download-excel');
+
+      searchBtn?.addEventListener('click', async () => {
+        setAdminNote('Đang truy xuất dữ liệu hành vi người dùng...');
+        const rows = await loadBehaviorTable(getBehaviorFilters());
+        setAdminNote(`Đã tải ${rows.length} bản ghi hành vi.`);
+      });
+
+      resetBtn?.addEventListener('click', async () => {
+        const caseEl = document.getElementById('behavior-caseid');
+        const activityEl = document.getElementById('behavior-activity');
+        const fromEl = document.getElementById('behavior-from');
+        const toEl = document.getElementById('behavior-to');
+
+        if (caseEl) caseEl.value = '';
+        if (activityEl) activityEl.value = '';
+        if (fromEl) fromEl.value = '';
+        if (toEl) toEl.value = '';
+
+        setAdminNote('Đang tải lại toàn bộ log hành vi...');
+        const rows = await loadBehaviorTable({});
+        setAdminNote(`Đã tải lại ${rows.length} bản ghi hành vi.`);
+      });
+
+      downloadBtn?.addEventListener('click', downloadBehaviorExcel);
+    }
+
+    async function loadAllAdminData() {
+      setAdminNote('Đang tải dữ liệu dashboard...');
+      const [_, __, ___, behaviorRows] = await Promise.all([
+        loadStats(),
+        loadProductsTable(),
+        loadOrdersTable(),
+        loadBehaviorTable(getBehaviorFilters())
+      ]);
+      const users = await loadUsers();
+      window.__adminUsers = users;
+      setAdminNote(`Dữ liệu đã được cập nhật. Log hành vi: ${behaviorRows.length} bản ghi.`);
+    }
+
+    function initUserSearch() {
+      const input = document.getElementById('search-users');
+      const tbody = document.getElementById('users-tbody');
+      if (!input || !tbody) return;
+
+      input.addEventListener('input', () => {
+        const keyword = input.value.trim().toLowerCase();
+        const users = Array.isArray(window.__adminUsers) ? window.__adminUsers : [];
+
+        const filtered = users.filter((u) => {
+          const email = (u.email || '').toLowerCase();
+          const username = (u.username || '').toLowerCase();
+          return email.includes(keyword) || username.includes(keyword);
+        });
+
+        tbody.innerHTML = filtered.map((user) => {
+          const roleClass = user.role === 'admin' ? 'admin-role-admin' : 'admin-role-user';
+          const roleLabel = user.role === 'admin' ? 'Admin' : 'User';
+          return `
+            <tr>
+              <td>${user.email || '-'}</td>
+              <td>${user.username || '-'}</td>
+              <td><span class="admin-role ${roleClass}">${roleLabel}</span></td>
+              <td>${formatDate(user.created_at)}</td>
+            </tr>
+          `;
+        }).join('');
+      });
+    }
+
+    async function ensureAdminAccess() {
+      const profile = await getCurrentProfile();
+
+      if (!profile) {
+        alert('Vui lòng đăng nhập để truy cập trang quản trị.');
+        window.location.href = 'login.html';
+        return false;
+      }
+
+      if (profile.role !== 'admin') {
+        alert('Bạn không có quyền truy cập trang quản trị.');
+        window.location.href = 'index.html';
+        return false;
+      }
+
+      return true;
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const allowed = await ensureAdminAccess();
+      if (!allowed) return;
+
+      document.querySelectorAll('.admin-tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => showTab(btn.dataset.tab));
+      });
+
+      document.getElementById('refresh-data')?.addEventListener('click', loadAllAdminData);
+
+      document.getElementById('logout-admin')?.addEventListener('click', async () => {
+        const result = await logoutUser();
+        alert(result.message || 'Đăng xuất thành công.');
+        window.location.href = 'login.html';
+      });
+
+      initUserSearch();
+      initBehaviorActions();
+      await loadAllAdminData();
+    });
+  </script>
+</body>
+</html>
